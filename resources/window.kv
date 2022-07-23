@@ -1,0 +1,100 @@
+<RecycleViewRow>:
+
+    fileName: ''
+    folderName: ''
+    folderPath: ''
+
+    canvas.before:
+        Color:
+            rgba: (0, 0.517, 0.705, 1) if self.selected else (0.4,0.4, 0.4, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'horizontal'
+        Label:
+            text_size: self.size
+            text: root.text
+            halign: 'left'
+            valign: 'top'
+            text: root.fileName
+        Label:
+            text_size: self.size
+            text: root.text
+            halign: 'left'
+            valign: 'top'
+            text: root.folderName
+        Label:
+            text_size: self.size
+            text: root.text
+            halign: 'left'
+            valign: 'top'
+            text: root.folderPath
+
+<WindowWidget>:
+    rv: rv
+    pb: pb
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.size
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: 0.6
+            # fileListView
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_x: 0.8
+                GridLayout:
+                    size_hint: 1, None
+                    size_hint_y: None
+                    height: 25
+                    cols: 3
+
+                    Label:
+                        text: "FileName"
+                    Label:
+                        text: "FolderName"
+                    Label:
+                        text: "FolderPath"
+
+                BoxLayout:
+                    RecycleView:
+                        id: rv
+                        scroll_type: ['bars', 'content']
+                        scroll_wheel_distance: sp(60)
+                        bar_width: sp(20)
+                        viewclass: 'RecycleViewRow'
+                        SelectableRecycleBoxLayout:
+                            cols: 3
+                            default_size: None, dp(26)
+                            default_size_hint: 1, None
+                            size_hint_y: None
+                            height: self.minimum_height
+                            orientation: 'vertical'
+                            multiselect: True
+                            touch_multiselect: True
+
+
+
+        # progless startButton View
+        BoxLayout:
+            size_hint_y: 0.1
+            ProgressBar:
+                id: pb
+                value: .25
+                min: 0
+                max: 1
+                pos_hint: {'x':.1}
+                size_hint_x: 0.9
+            Button:
+                id: startButton
+                text: "Start"
+                font_size: 20
+                on_press: root.startButtonClicked()
+                size_hint_x: 0.1
+        # Addsence View
+        BoxLayout:
+            size_hint_y: 0.3
+            Label:
+                text: "Good Evening"
