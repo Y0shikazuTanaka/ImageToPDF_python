@@ -12,13 +12,13 @@ from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 
-from python import pdfCreater
-from python import config
+import pdfCreater
+import config
 
-CONF_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), r"..\resources\window.kv")
+CONF_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), config.resource_path("window.kv"))
 Builder.load_file(CONF_PATH)
 
-FONT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), r"..\resources\YuGothM.ttc")
+FONT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), config.resource_path("YuGothM.ttc"))
 LabelBase.register(DEFAULT_FONT, FONT_PATH)
 
 

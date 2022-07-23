@@ -3,7 +3,7 @@ import os
 import re
 import img2pdf
 from PIL import Image
-from python import config
+import config
 
 
 class PdfCreater:

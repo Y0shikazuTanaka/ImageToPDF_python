@@ -1,9 +1,17 @@
 import configparser
 import os
+import sys
+
+
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(f"{sys._MEIPASS}", relative_path)
+    return os.path.join(os.path.abspath("../resources"), relative_path)
 
 
 class Config:
-    CONF_FILE = r"..\resources\config.ini"
+
+    CONF_FILE = resource_path("config.ini")
     CONF_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), CONF_FILE)
 
     if not os.path.exists(CONF_PATH):

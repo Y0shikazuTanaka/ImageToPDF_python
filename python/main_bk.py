@@ -4,7 +4,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import tkinter.filedialog
-from python import config
+import config
 import os
 
 
