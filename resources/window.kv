@@ -6,7 +6,7 @@
 
     canvas.before:
         Color:
-            rgba: (0, 0.517, 0.705, 1) if self.selected else (0.4,0.4, 0.4, 1)
+            rgba: (0, 0.517, 0.705, 1) if self.selected else (1, 1, 1, 1)
         Rectangle:
             pos: self.pos
             size: self.size
@@ -17,30 +17,40 @@
             text_size: self.size
             text: root.text
             halign: 'left'
-            valign: 'top'
+            valign: 'middle'
             text: root.fileName
+            color: 0, 0, 0, 1
         Label:
             text_size: self.size
             text: root.text
             halign: 'left'
-            valign: 'top'
+            valign: 'middle'
             text: root.folderName
+            color: 0, 0, 0, 1
         Label:
             text_size: self.size
             text: root.text
             halign: 'left'
-            valign: 'top'
+            valign: 'middle'
             text: root.folderPath
+            color: 0, 0, 0, 1
 
 <WindowWidget>:
     rv: rv
     pb: pb
+    canvas.before:
+        Color:
+            rgba: 0.8, 0.8, 0.8, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
     BoxLayout:
         orientation: 'vertical'
         size: root.size
         BoxLayout:
             orientation: 'horizontal'
-            size_hint_y: 0.6
+            size_hint_y: 0.9
             # fileListView
             BoxLayout:
                 orientation: "vertical"
@@ -52,11 +62,14 @@
                     cols: 3
 
                     Label:
-                        text: "FileName"
+                        text: "File name"
+                        color: 0, 0, 0, 1
                     Label:
-                        text: "FolderName"
+                        text: "Folder name"
+                        color: 0, 0, 0, 1
                     Label:
-                        text: "FolderPath"
+                        text: "Folder path"
+                        color: 0, 0, 0, 1
 
                 BoxLayout:
                     RecycleView:
@@ -93,8 +106,3 @@
                 font_size: 20
                 on_press: root.startButtonClicked()
                 size_hint_x: 0.1
-        # Addsence View
-        BoxLayout:
-            size_hint_y: 0.3
-            Label:
-                text: "Good Evening"

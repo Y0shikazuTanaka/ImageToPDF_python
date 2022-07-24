@@ -14,6 +14,7 @@ from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 
 import pdfCreater
 import config
+import dataclasses
 
 CONF_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), config.resource_path("window.kv"))
 Builder.load_file(CONF_PATH)
@@ -22,13 +23,16 @@ FONT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), config.reso
 LabelBase.register(DEFAULT_FONT, FONT_PATH)
 
 
+@dataclasses.dataclass
+class FolderData:
+    parent_path: str
+    folder_name: str
+    folder_path: str
+
+
 class WindowWidget(Widget):
     isAllFileRemove = BooleanProperty(None)
-    fileNames = []
-    folderNames = []
-    folderPaths = []
-
-    dropParentPath = None
+    folder_data_list: list[FolderData]
 
     pbStep = 0.0
 
@@ -38,6 +42,7 @@ class WindowWidget(Widget):
 
         # ファイルリストビュー初期化
         self.rv.data = []
+        self.folder_data_list = []
         # プログレスバー初期化
         self.pb.value = 0.0
 
@@ -45,43 +50,37 @@ class WindowWidget(Widget):
     def startButtonClicked(self):
         print("startButtonClicked")
         pc = pdfCreater.PdfCreater()
-        for i in range(len(self.fileNames)):
-            pc.createPDF(self.folderPaths[i], self.dropParentPath)
+        for folder_data in self.folder_data_list:
+            pc.createPDF(folder_data.folder_path, folder_data.parent_path)
             self.pb.value += self.pbStep
 
     # フォルダードラッグアンドドロップイベント
     def folderDropEvent(self, window, file_path):
+        self.rv.data = []
         plib = pathlib.Path(file_path.decode())
         dirs = plib.glob("**/")
 
         c = config.Config()
-        chekImgFormatList = c.imgFormats.split(',')
-
-        self.dropParentPath = plib.parent
-
-        self.rv.data = []
-
-        self.fileNames = []
-        self.folderNames = []
-        self.folderPaths = []
+        chek_img_format_list = c.imgFormats.split(',')
+        parent_path = plib.parent
 
         for f in dirs:
             files = []
-            for ext in chekImgFormatList:
-                files.extend(f.glob(f"*.{ext}"))
+            checklist = [tmp_folder_data for tmp_folder_data in self.folder_data_list if tmp_folder_data.folder_path == str(f)]
+            # 重複チェック
+            if len(checklist) == 0:
+                for ext in chek_img_format_list:
+                    files.extend(f.glob(f"*.{ext}"))
+                if len(files) > 0:
+                    self.folder_data_list.append(FolderData(str(parent_path), f.name, str(f)))
 
-            if len(files) > 0:
-                self.fileNames.append(f.name)
-                self.folderNames.append(f.name)
-                self.folderPaths.append(f)
+        self.pbStep = 1 / len(self.folder_data_list)
 
-        self.pbStep = 1 / len(self.fileNames)
-
-        for i in range(len(self.fileNames)):
+        for folder_data in self.folder_data_list:
             self.rv.data.append({
-                'fileName': self.fileNames[i],
-                'folderName': self.folderNames[i],
-                'folderPath': str(self.folderPaths[i]),
+                'fileName': folder_data.folder_name,
+                'folderName': folder_data.folder_name,
+                'folderPath': folder_data.folder_path,
             })
 
 
