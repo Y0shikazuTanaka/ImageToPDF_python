@@ -25,9 +25,9 @@ LabelBase.register(DEFAULT_FONT, FONT_PATH)
 
 @dataclasses.dataclass
 class FolderData:
-    parent_path: str
+    parent_path: pathlib.Path
     folder_name: str
-    folder_path: str
+    folder_path: pathlib.Path
 
 
 class WindowWidget(Widget):
@@ -66,13 +66,13 @@ class WindowWidget(Widget):
 
         for f in dirs:
             files = []
-            checklist = [tmp_folder_data for tmp_folder_data in self.folder_data_list if tmp_folder_data.folder_path == str(f)]
+            checklist = [tmp_folder_data for tmp_folder_data in self.folder_data_list if tmp_folder_data.folder_path == f]
             # 重複チェック
             if len(checklist) == 0:
                 for ext in chek_img_format_list:
                     files.extend(f.glob(f"*.{ext}"))
                 if len(files) > 0:
-                    self.folder_data_list.append(FolderData(str(parent_path), f.name, str(f)))
+                    self.folder_data_list.append(FolderData(parent_path, f.name, f))
 
         self.pbStep = 1 / len(self.folder_data_list)
 
@@ -80,7 +80,7 @@ class WindowWidget(Widget):
             self.rv.data.append({
                 'fileName': folder_data.folder_name,
                 'folderName': folder_data.folder_name,
-                'folderPath': folder_data.folder_path,
+                'folderPath': str(folder_data.folder_path),
             })
 
 
