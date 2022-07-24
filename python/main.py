@@ -72,15 +72,16 @@ class WindowWidget(Widget):
                     if selected_data["folderPath"] == str(folder_data.folder_path):
                         self.folder_data_list.remove(folder_data)
         # 表示用データを生成
-        self.pbStep = 1 / len(self.folder_data_list)
         self.rv.data = []
-        for folder_data in self.folder_data_list:
-            self.rv.data.append({
-                'fileName': folder_data.folder_name,
-                'folderName': folder_data.folder_name,
-                'folderPath': str(folder_data.folder_path),
-                'selected': False,
-            })
+        if len(self.folder_data_list) > 0:
+            self.pbStep = 1 / len(self.folder_data_list)
+            for folder_data in self.folder_data_list:
+                self.rv.data.append({
+                    'fileName': folder_data.folder_name,
+                    'folderName': folder_data.folder_name,
+                    'folderPath': str(folder_data.folder_path),
+                    'selected': False,
+                })
         return True
 
 
