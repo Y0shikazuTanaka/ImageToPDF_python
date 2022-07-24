@@ -20,6 +20,7 @@ a = Analysis(
 )
 
 a.datas += [
+('icon.ico', '..\\resources\icon.ico', 'DATA'),
 ('config.ini', '..\\resources\config.ini', 'DATA'),
 ('window.kv', '..\\resources\window.kv', 'DATA'),
 ('YuGothM.ttc', '..\\resources\YuGothM.ttc', 'DATA')]
@@ -33,7 +34,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
-    name='main',
+    name='ImageToPDF',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -55,4 +56,4 @@ coll = COLLECT(exe, Tree('.'),
                *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
                strip=False,
                upx=True,
-               name='main')
+               name='ImageToPDF')

@@ -56,7 +56,6 @@ class WindowWidget(Widget):
 
     # フォルダードラッグアンドドロップイベント
     def folderDropEvent(self, window, file_path):
-        self.rv.data = []
         plib = pathlib.Path(file_path.decode())
         dirs = plib.glob("**/")
 
@@ -76,6 +75,8 @@ class WindowWidget(Widget):
 
         self.pbStep = 1 / len(self.folder_data_list)
 
+        # 表示用データを生成
+        self.rv.data = []
         for folder_data in self.folder_data_list:
             self.rv.data.append({
                 'fileName': folder_data.folder_name,
@@ -121,6 +122,7 @@ class ImageToPDF(App):
         self.title = 'ImageToPDF'
 
     def build(self):
+        self.icon = config.resource_path("icon.ico")
         return WindowWidget()
 
 
