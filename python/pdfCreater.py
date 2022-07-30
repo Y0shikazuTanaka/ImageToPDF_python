@@ -1,9 +1,16 @@
-import glob
 import os
 import re
 import img2pdf
 from PIL import Image
 import config
+
+
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+
+def natural_keys(text):
+    return [ atoi(c) for c in re.split(r'(\d+)', text) ]
 
 
 class PdfCreater:
@@ -20,11 +27,11 @@ class PdfCreater:
 
         if len(files) == 0:
             raise Exception(f"フォルダ内に画像ファイルがありません。{dir_path}")
-        else:
-            files.sort()
+
+        sort_files = sorted([str(f) for f in files], key=natural_keys)
 
         with open(f"{out_pdf_path}/{dir_path.name}.pdf", "wb") as f:
-            f.write(img2pdf.convert([Image.open(str(f)).filename for f in files]))
+            f.write(img2pdf.convert([Image.open(f).filename for f in sort_files]))
 
     def convertPngToJpeg(self, dir_path):
         files = dir_path.glob(f"*.*")

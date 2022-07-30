@@ -84,7 +84,6 @@ class WindowWidget(Widget):
                 })
         return True
 
-
     # スタートボタンクリック
     def startButtonClicked(self):
         print("startButtonClicked")
